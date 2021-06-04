@@ -24,7 +24,15 @@ const styles = (theme) => ({
     display: "flex",
     justifyContent: "center",
     margin: "10px",
+    backgroundColor: "#05386B",
+    
   },
+  button : {
+    color : "#5CDB95",
+    '&:hover': {
+      color: '#EDF5E1',
+    },
+  }
 });
 
 
@@ -170,6 +178,7 @@ class Dashboard extends React.Component {
           .then((s) => {
             if (s.status === 200) {
               this.setState({ details: s.data, loading: false }, () => {});
+              this.createGraph("7");
             } else {
               this.setState({ details: [], loading: false }, () => {});
             }
@@ -274,32 +283,27 @@ class Dashboard extends React.Component {
                 className={classes.buttongroup}
                 aria-label="contained primary button group"
                 variant="outlined"
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  margin: "10px",
-                  backgroundColor: "#05386B",
-                }}
+                className = { classes.buttongroup }
               >
-                <Button value="7" onClick={this.selectedPeriod} style = {{ color : "#5CDB95"}}>
+                <Button value="7" onClick={this.selectedPeriod} className = { classes.button }>
                   7D
                 </Button>
-                <Button value="30" onClick={this.selectedPeriod} style = {{ color : "#5CDB95"}}>
+                <Button value="30" onClick={this.selectedPeriod} className = { classes.button }>
                   1M
                 </Button>
-                <Button value="90" onClick={this.selectedPeriod} style = {{ color : "#5CDB95"}}>
+                <Button value="90" onClick={this.selectedPeriod} className = { classes.button }>
                   3M
                 </Button>
-                <Button value="180" onClick={this.selectedPeriod} style = {{ color : "#5CDB95"}}>
+                <Button value="180" onClick={this.selectedPeriod} className = { classes.button }>
                   6M
                 </Button>
-                <Button value="360" onClick={this.selectedPeriod} style = {{ color : "#5CDB95"}}>
+                <Button value="360" onClick={this.selectedPeriod} className = { classes.button }>
                   1Y
                 </Button>
-                <Button value="1800" onClick={this.selectedPeriod} style = {{ color : "#5CDB95"}}>
+                <Button value="1800" onClick={this.selectedPeriod} className = { classes.button }>
                   5Y
                 </Button>
-                <Button value="all" onClick={this.selectedPeriod} style = {{ color : "#5CDB95"}}>
+                <Button value="all" onClick={this.selectedPeriod} className = { classes.button }>
                   All
                 </Button>
               </ButtonGroup>

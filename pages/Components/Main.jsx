@@ -30,7 +30,7 @@ class Main extends React.Component {
           src="\images\stocks6.png"
           style={{
             position: "relative",
-            top: 60,
+            top: 35,
             left: 0,
             width: "100%",
             height: "90%",

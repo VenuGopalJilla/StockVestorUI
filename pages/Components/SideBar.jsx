@@ -154,7 +154,7 @@ class SideBar extends React.Component {
           </NavLink>
           <NavLink to={{ pathname: "/revenue" }} className={classes.link}>
             <ListItem button key= "REVENUE">
-                <ListItemText primary="REVENUE" className = { classes.listitem }/>
+                <ListItemText primary="TOP 30 REVENUE" className = { classes.listitem }/>
               </ListItem>
           </NavLink> 
         </List>
