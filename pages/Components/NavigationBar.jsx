@@ -24,8 +24,11 @@ const styles = (theme) => ({
     // },
   },
   typography: {
-    padding: 20,
+    padding: 15,
     fontSize : 24,
+    "&:hover": {
+      color: "#EDF5E1",
+    },
   },
 });
 
@@ -64,50 +67,36 @@ class NavigationBar extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <Grid container className={classes.root} spacing={1}>
+      <Grid container className={classes.root} spacing={3}>
         <Grid item className={classes.grid}>
           <NavLink to="/" className={classes.link}>
-            <Typography className={classes.typography} variant="button"
+            <Typography className={classes.typography} variant="subtitle1"
             >
-              Home
+              HOME
             </Typography>
           </NavLink>
         </Grid>
         <Grid item className={classes.grid}>
           <NavLink to="/about" className={classes.link}>
-            <Typography className={classes.typography} variant="button"
+            <Typography className={classes.typography} variant="subtitle1"
             >
-              About
+              ABOUT
             </Typography>
           </NavLink>
         </Grid>
-        {/* <Grid item>
-          <NavLink to="/performance" className={classes.link} variant="button">
-            <Typography className={classes.grid} variant="h4">
-              Performance
-            </Typography>
-          </NavLink>
-        </Grid> */}
-        {/* <Grid item>
-          <NavLink to="/login" className={classes.link}>
-            <Typography className={classes.grid} variant="h4">
-              Login
-            </Typography>
-          </NavLink>
-        </Grid> */}
         <Grid item className={classes.grid}>
           <NavLink to="/comparison" className={classes.link}>
-            <Typography className={classes.typography} variant="button"
+            <Typography className={classes.typography} variant="subtitle1"
             >
-              Comparison
+              COMPARISON
             </Typography>
           </NavLink>
         </Grid>
         <Grid item className={classes.grid}>
           <NavLink to="/simulation" className={classes.link} >
-            <Typography className={classes.typography} variant="button" 
+            <Typography className={classes.typography} variant="subtitle1" 
             >
-              Simulation
+              SIMULATION
             </Typography>
           </NavLink>
         </Grid>
@@ -122,6 +111,7 @@ class NavigationBar extends React.Component {
               this.selectedCompany(e, val);
             }}
             id="search for companies"
+            marginLeft= "2px"
             freeSolo
             options={this.state.companyNames.map((companyname) => companyname)}
             renderInput={(params) => (

@@ -6,13 +6,11 @@ import React from "react";
 import { Route, Switch, withRouter, HashRouter} from "react-router-dom";
 import About from "./About";
 import Typography from "@material-ui/core/Typography";
-
+import clsx from "clsx";
 import CompanyDetails from "./CompanyDetails";
 import Comparison from "./Comparison";
-// import Login from "./Login";
 import NavigationBar from "./NavigationBar";
 import PageNotFound from "./PageNotFound";
-// import Performance from "./Performance";
 import Revenue from "./Revenue";
 import Sectors from "./Sectors";
 import SideBar from "./SideBar";
@@ -21,15 +19,38 @@ import Top from "./Top";
 import Simulation from "./Simulation";
 import Main from "./Main";
 
-const drawerWidth = 300;
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+
+
+
+const drawerWidth = 280;
+
 const styles = (theme) => ({
   root: {
-    display: "flex",
+    display: 'flex',
   },
   appBar: {
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: drawerWidth,
-    paddingTop: theme.spacing(2),
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  hide: {
+    display: 'none',
   },
   drawer: {
     width: drawerWidth,
@@ -38,76 +59,110 @@ const styles = (theme) => ({
   drawerPaper: {
     width: drawerWidth,
   },
-  // necessary for content to be below app bar
-  toolbar: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 30,
+  drawerHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(2),
+    // necessary for content to be below app bar
     ...theme.mixins.toolbar,
+    justifyContent: 'flex-end',
+    backgroundColor: "#05386B",
   },
   content: {
-    // backgroundColor: theme.palette.background.default,
-    backgroundColor : "white",
     flexGrow: 1,
-    flexWrap: "wrap",
-    padding: theme.spacing(3),
-    minWidth: "480px",
-    width: "auto",
-    height: "100%",
-    overflowX: "hidden",
-    alignItems: "center"
+    padding: theme.spacing(11),
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: -drawerWidth,
+    // marginLeft: 0,
+  },
+  contentShift: {
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginLeft: 0,
   },
 });
+
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       companyNames: [],
+      open: true,
     };
   }
+
+
+  handleDrawerOpen = () => {
+    this.setState({ open : true});
+  };
+
+  handleDrawerClose = () => {
+    this.setState({ open : false});
+  };
 
   componentDidMount = () => {
     console.log("Home");
   };
 
   render() {
-    const { classes } = this.props;
-    console.log(this.props);
+    const { classes, theme } = this.props;
+    const open = this.state.open;
+    
     return (
       <React.Fragment>
         <HashRouter>
         <AppBar
           position="relative"
-          className={classes.appBar}
-          style={{ backgroundColor: "#5CDB95", color: "#05386B"}}
+          className={clsx(classes.appBar, {
+            [classes.appBarShift]: open,
+          })}
+          style={{ backgroundColor: "#5CDB95", color: "#05386B", position: "fixed"}}
         >
           <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={this.handleDrawerOpen}
+              edge="start"
+              className={clsx(classes.menuButton, open && classes.hide)}
+            >
+              <MenuIcon />
+            </IconButton>
             <NavigationBar />
           </Toolbar>
         </AppBar>
         <div className={classes.root}>
           <Drawer
             className={classes.drawer}
-            variant="permanent"
+            variant="persistent"
             classes={{
               paper: classes.drawerPaper,
             }}
             anchor="left"
+            open={open}
+            backgroundColor= "#05386B"
           >
-            {/* <div className={classes.toolbar}>
-              <Typography variant="h4">Stock Trends</Typography>
-            </div> */}
+            <div className={classes.drawerHeader}>
+            <Typography variant="h6" style = {{ color: "#EDF5E1"}}>STOCK TRENDS</Typography>
+              <IconButton onClick={this.handleDrawerClose}>
+                {theme.direction === 'ltr' ? <ChevronLeftIcon style = {{ color : "#EDF5E1"}}/> : <ChevronRightIcon style = {{ color : "#EDF5E1"}}/>}
+              </IconButton>
+            </div>
             <SideBar />
           </Drawer>
-          <main className={classes.content}>
+          <main className={clsx(classes.content, {
+              [classes.contentShift]: open,
+            })}>
             <Switch>
               <Route exact path="/" component = {Main}/>
               <Route exact path="/home" component = {Main}/>
-              {/* <Route exact path="/login" component={Login} /> */}
               <Route exact path="/about" component={About} />
-              {/* <Route exact path="/performance" component={Performance} /> */}
               <Route
                 exact
                 path="/top/:num/:type"
@@ -155,4 +210,4 @@ class Home extends React.Component {
   }
 }
 
-export default withStyles(styles)(withRouter(Home));
+export default withStyles(styles, { withTheme: true })(withRouter(Home));

@@ -151,6 +151,7 @@ class Dashboard extends React.Component {
           .then((s) => {
             if (s.status === 200) {
               this.setState({ details: s.data, loading: false }, () => {});
+              this.createGraph("7");
             } else {
               this.setState({ details: [], loading: false }, () => {});
             }
@@ -161,6 +162,7 @@ class Dashboard extends React.Component {
             this.setState({ loading: false, error: true }, () => {});
           });
       });
+      
     } else {
       this.setState({ company: this.props.company }, () => {
         axios

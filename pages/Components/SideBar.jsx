@@ -1,13 +1,15 @@
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Paper,
   withStyles,
 } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
 import React from "react";
 import { NavLink } from "react-router-dom";
+
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Collapse from '@material-ui/core/Collapse';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
 
 
 const styles = (theme) => ({
@@ -21,134 +23,141 @@ const styles = (theme) => ({
   link: {
     textDecoration: "none",
   },
-  paper: {
-    display: "flex",
-    
-    "& > *": {
-      padding: theme.spacing(3),
-      border: '0px',
-      width: "100%",
-      height: "100%",
-    },
+  listitem : {
+    color: "#5CDB95", 
+    padding : "42px",
+  },
+  list : {
     backgroundColor: "#05386B",
-    color: "#5CDB95"
   },
-  paper1: {
-    display: "flex",
-    
-    "& > *": {
-      padding: theme.spacing(1),
-      // margin: theme.spacing(1),
-      border: '0px',
-      width: "100%",
-      height: "100%",
-    },
+  listitemaccordion: {
+    alignContent: "center"
+  },
+  listitemtextaccordion : {
+    color : "#5CDB95",
+  },
+  expandless : {
+    color : "#5CDB95",
+    // color: "#EDF5E1",
+  },
+  expandmore : {
+    color : "#5CDB95",
+    // color: "#EDF5E1",
+  },
+  nested: {
+    paddingLeft: theme.spacing(4),
+  },
+  collapselist: {
     backgroundColor: "#5CDB95",
-    color: "#05386B"
+    color: "#05386B",
   },
+  collapselistitemtextaccordion : {
+    color: "#05386B",
+    
+    // color: "#EDF5E1",
+  }
+
 });
 
 class SideBar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      open: false,
+      open1: false
+    };
   }
   componentDidMount = () => {
     console.log("Sidebar");
+  };
+
+  handleClick = () => {
+    if (this.state.open) {
+      this.setState({ open : false});
+    } else {
+      this.setState({ open : true});
+    }
+  };
+
+  handleClick1 = () => {
+    if (this.state.open1) {
+      this.setState({ open1 : false});
+    } else {
+      this.setState({ open1 : true});
+    }
   };
 
   render() {
     const { classes } = this.props;
     return (
       <React.Fragment>
-        <Paper className={classes.paper} elevation={0} style = {{
-          padding : '0px',
-        }}>
-          <Accordion style = {{
-              backgroundColor: "#05386B",
-              color: "#5CDB95",
-              border : "none"
-            }}>
-            <AccordionSummary id="top10" >
-              <Typography variant="subtitle1">TOP 10</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
+        <List className = {classes.list}>
+          <ListItem button onClick={this.handleClick} className = {classes.listitemaccordion}>
+            <ListItemText primary="TOP10"  className = {classes.listitemtextaccordion}/>
+            {this.state.open ? <ExpandLess className = {classes.expandless}/> : <ExpandMore className = {classes.expandmore}/>}
+          </ListItem>
+          <Collapse in={this.state.open} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding className = {classes.collapselist}>
               <NavLink
-                to={{ pathname: "/top/10/buy" }}
-                className={classes.link}
-              >
-                <Paper className={classes.paper1} elevation={0}>
-                  <Typography variant="subtitle2">BUY</Typography>
-                </Paper>
-              </NavLink>
-            </AccordionDetails>
-            <AccordionDetails>
+                  to={{ pathname: "/top/10/buy" }}
+                  className={classes.link}
+                >
+                  <ListItem button className={classes.nested}>
+                    <ListItemText primary="BUY" className = {classes.collapselistitemtextaccordion}/>
+                  </ListItem>
+                </NavLink>
+                <NavLink
+                  to={{ pathname: "/top/10/sell" }}
+                  className={classes.link}
+                >
+                  <ListItem button className={classes.nested}>
+                    <ListItemText primary="SELL" className = {classes.collapselistitemtextaccordion}/>
+                  </ListItem>
+                </NavLink>
+            </List>
+          </Collapse>
+          <ListItem button onClick={this.handleClick1} className = {classes.listitemaccordion}>
+            <ListItemText primary="TOP30" className = {classes.listitemtextaccordion}/>
+            {this.state.open1 ? <ExpandLess className = {classes.expandless}/> : <ExpandMore className = {classes.expandmore}/>}
+          </ListItem>
+          <Collapse in={this.state.open1} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding className = {classes.collapselist}>
               <NavLink
-                to={{ pathname: "/top/10/sell" }}
-                className={classes.link}
-              >
-                <Paper className={classes.paper1} elevation={0}>
-                  <Typography variant="subtitle2">SELL</Typography>
-                </Paper>
-              </NavLink>
-            </AccordionDetails>
-          </Accordion>
-        </Paper>
-        <Paper className={classes.paper} elevation={0}>
-          <Accordion style = {{
-              backgroundColor: "#05386B",
-              color: "#5CDB95",
-              border : "none"
-            }}>
-            <AccordionSummary>
-              <Typography variant="subtitle1">TOP 30</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <NavLink
-                to={{ pathname: "/top/30/buy" }}
-                className={classes.link}
-              >
-                <Paper className={classes.paper1} elevation={0}>
-                  <Typography variant="subtitle2">BUY</Typography>
-                </Paper>
-              </NavLink>
-            </AccordionDetails>
-            <AccordionDetails>
-              <NavLink
-                to={{ pathname: "/top/30/sell" }}
-                className={classes.link}
-              >
-                <Paper className={classes.paper1} elevation={0}>
-                  <Typography variant="subtitle2">SELL</Typography>
-                </Paper>
-              </NavLink>
-            </AccordionDetails>
-          </Accordion>
-        </Paper>
-        {/* <div style = {{
-            padding : '2px',
-          }}></div> */}
-        <Paper className={classes.paper} elevation={0}>
+                  to={{ pathname: "/top/30/buy" }}
+                  className={classes.link}
+                >
+                  <ListItem button className={classes.nested}>
+                    <ListItemText primary="BUY" className = {classes.collapselistitemtextaccordion}/>
+                  </ListItem>
+                </NavLink>
+                <NavLink
+                  to={{ pathname: "/top/30/sell" }}
+                  className={classes.link}
+                >
+                  <ListItem button className={classes.nested}>
+                    <ListItemText primary="SELL" className = {classes.collapselistitemtextaccordion}/>
+                  </ListItem>
+                </NavLink>
+            </List>
+          </Collapse>
+        </List>
+        <List className = {classes.list} >
           <NavLink to={{ pathname: "/sectors" }} className={classes.link}>
-            <Paper className={classes.paper} elevation={0}>
-              <Typography variant="subtitle1">SECTORS</Typography>
-            </Paper>
+            <ListItem button key= "SECTORS">
+                <ListItemText primary="SECTORS" className = { classes.listitem }/>
+              </ListItem>
           </NavLink>
-        </Paper>
-        <Paper className={classes.paper} elevation={0}>
           <NavLink to={{ pathname: "/sp500" }} className={classes.link}>
-            <Paper className={classes.paper} elevation={0}>
-              <Typography variant="subtitle1">S AND P 500</Typography>
-            </Paper>
+            <ListItem button key= "SP500">
+                <ListItemText primary="SP500" className = { classes.listitem }/>
+              </ListItem>
           </NavLink>
-        </Paper>
-        <Paper className={classes.paper} elevation={0}>
           <NavLink to={{ pathname: "/revenue" }} className={classes.link}>
-            <Paper className={classes.paper} elevation={0}>
-              <Typography variant="subtitle1"> TOP REVENUE</Typography>
-            </Paper>
-          </NavLink>
-        </Paper>
+            <ListItem button key= "REVENUE">
+                <ListItemText primary="REVENUE" className = { classes.listitem }/>
+              </ListItem>
+          </NavLink> 
+        </List>
       </React.Fragment>
     );
   }

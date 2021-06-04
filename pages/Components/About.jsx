@@ -6,7 +6,12 @@ class About extends React.Component {
   };
 
   render() {
-    return <React.Fragment>About</React.Fragment>;
+    return (
+    <React.Fragment>
+      <div style = {{ width : "80px", height : "80px"}}></div>
+      <div>About</div>
+    </React.Fragment>
+    );
   }
 }
 
