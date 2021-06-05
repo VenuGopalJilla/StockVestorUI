@@ -72,7 +72,7 @@ class About extends React.Component {
                   alt="Venu Gopal Jilla"
                   height="200"
                   width = "300"
-                  image="/images/My photo.jpg"
+                  image="/images/MyPhoto.jpg"
                   title="Venu Gopal Jilla"
                 />
                 <CardContent>
