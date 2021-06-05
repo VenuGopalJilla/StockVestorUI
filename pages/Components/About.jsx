@@ -51,8 +51,6 @@ class About extends React.Component {
                 <CardMedia
                   component="img"
                   alt="Dr.Arun Kumar Parayatham"
-                  height="200"
-                  width = "300"
                   image="/images/AKP.jpg"
                   title="Dr.Arun Kumar Parayatham"
                 />
@@ -70,8 +68,6 @@ class About extends React.Component {
                 <CardMedia
                   component="img"
                   alt="Venu Gopal Jilla"
-                  height="200"
-                  width = "300"
                   image="/images/MyPhoto.jpg"
                   title="Venu Gopal Jilla"
                 />
@@ -89,8 +85,6 @@ class About extends React.Component {
               <CardMedia
                 component="img"
                 alt="Sai Krishna Nama"
-                height="200"
-                width = "300"
                 image="/images/SKN.jpg"
                 title="Sai Krishna Nama"
               />
