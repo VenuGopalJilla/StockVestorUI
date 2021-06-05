@@ -44,7 +44,7 @@ class About extends React.Component {
         <Typography variant = "h6" className = { classes.typography }>
           Our Team :
         </Typography>
-        <Grid classes={classes.root} container spacing={4} wrap={'nowrap'}>
+        <Grid classes={classes.root} container spacing={5} wrap={'nowrap'}>
           <Grid item>
             <Card className={classes.root}>
               <CardActionArea>
