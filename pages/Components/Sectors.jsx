@@ -19,6 +19,7 @@ const styles = (theme) => ({
     justifyContent: "center",
     alignItems: "center",
     display: "flex",
+    padding: '10px'
   },
 });
 
@@ -158,10 +159,6 @@ class Sectors extends React.Component {
       series.push(countdata);
       this.setState({ series: series }, () => {});
 
-
-
-
-
     });
 
     
@@ -201,15 +198,7 @@ class Sectors extends React.Component {
     const { classes } = this.props;
     return (
       <React.Fragment>
-        <div className = { classes.divchart }>
-          <Chart
-                options={this.state.options}
-                series={this.state.series}
-                key="chart"
-                type="bar"
-                className={classes.chart}
-          />
-        </div>
+        
         {this.state.sectors.length !== 0 && (
           <Autocomplete
             style={{ width: "50%", align: "center" }}
@@ -252,6 +241,15 @@ class Sectors extends React.Component {
             )}
           />
         )}
+        <div className = { classes.divchart }>
+          <Chart
+                options={this.state.options}
+                series={this.state.series}
+                key="chart"
+                type="bar"
+                className={classes.chart}
+          />
+        </div>
       </React.Fragment>
     );
   }
