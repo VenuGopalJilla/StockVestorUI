@@ -13,7 +13,7 @@ const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const styles = (theme) => ({
   chart: {
-    width: "100%",
+    width: "90%",
   },
   divchart: {
     justifyContent: "center",
