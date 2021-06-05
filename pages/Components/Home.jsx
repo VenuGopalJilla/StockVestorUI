@@ -148,7 +148,7 @@ class Home extends React.Component {
             backgroundColor= "#05386B"
           >
             <div className={classes.drawerHeader}>
-            <Typography variant="h6" style = {{ color: "#EDF5E1"}}>STOCK TRENDS</Typography>
+            <Typography variant="h6" style = {{ color: "#EDF5E1"}}>STOCK VESTOR</Typography>
               <IconButton onClick={this.handleDrawerClose}>
                 {theme.direction === 'ltr' ? <ChevronLeftIcon style = {{ color : "#EDF5E1"}}/> : <ChevronRightIcon style = {{ color : "#EDF5E1"}}/>}
               </IconButton>
