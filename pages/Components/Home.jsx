@@ -92,7 +92,7 @@ class Home extends React.Component {
     super(props);
     this.state = {
       companyNames: [],
-      open: true,
+      open: false,
     };
   }
 
