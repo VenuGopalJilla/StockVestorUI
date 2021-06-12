@@ -113,7 +113,7 @@ class NavigationBar extends React.Component {
         <Grid item xs = { 11 }>
           <Grid container justify = "center">
             <Grid item className={classes.grid}>
-              <NavLink to="/" className={classes.link}>
+              <NavLink to="/home" className={classes.link} activeStyle={{ color: "#EDF5E1" }}>
                 <Typography className={classes.typography} variant="subtitle1"
                 >
                   HOME
@@ -122,7 +122,7 @@ class NavigationBar extends React.Component {
             </Grid>
 
             <Grid item className={classes.grid}>
-              <NavLink to="/about" className={classes.link}>
+              <NavLink to="/about" className={classes.link} activeStyle={{ color: "#EDF5E1" }}>
                 <Typography className={classes.typography} variant="subtitle1"
                 >
                   ABOUT
@@ -141,7 +141,7 @@ class NavigationBar extends React.Component {
                 interactive
               >
                 <Grid item className={classes.grid}>
-                  <NavLink to="/comparison" className={classes.link}>
+                  <NavLink to="/comparison" className={classes.link} activeStyle={{ color: "#EDF5E1" }}>
                     <Typography className={classes.typography} variant="subtitle1"
                     >
                       COMPARISON
@@ -164,7 +164,7 @@ class NavigationBar extends React.Component {
                 interactive
               >
                 <Grid item className={classes.grid}>
-                  <NavLink to="/simulation" className={classes.link} >
+                  <NavLink to="/simulation" className={classes.link} activeStyle={{ color: "#EDF5E1" }}>
                     <Typography className={classes.typography} variant="subtitle1" 
                     >
                       SIMULATION
@@ -176,36 +176,10 @@ class NavigationBar extends React.Component {
                 <span />
             )}
 
-            {/* <Grid item className={classes.grid}>
-              <Autocomplete
-                style={{ 
-                  width: "300px",
-                  color:"#05386B"
-                }}
-                value={this.state.selectedCompany}
-                onChange={(e, val) => {
-                  this.selectedCompany(e, val);
-                }}
-                id="search for companies"
-                marginLeft= "2px"
-                freeSolo
-                options={this.state.companyNames.map((companyname) => companyname)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="search for companies"
-                    margin="normal"
-                    variant="outlined"
-                    color="#05386B"
-                  />
-                )}
-              />
-            </Grid> */}
-
-        
+            
             { logged === false || logged === null ? (
               <Grid item className={classes.grid}>
-                <NavLink to="/login" className={classes.link} >
+                <NavLink to="/login" className={classes.link} activeStyle={{ color: "#EDF5E1" }}>
                   <Typography className={classes.typography} variant="subtitle1" 
                   >
                     SIGN IN
@@ -217,7 +191,7 @@ class NavigationBar extends React.Component {
 
             { logged === false || logged === null ? (
               <Grid item className={classes.grid}>
-                <NavLink to="/signup" className={classes.link}>
+                <NavLink to="/signup" className={classes.link} activeStyle={{ color: "#EDF5E1" }}>
                   <Typography className={classes.typography} variant="subtitle1" 
                   >
                     SIGN UP
