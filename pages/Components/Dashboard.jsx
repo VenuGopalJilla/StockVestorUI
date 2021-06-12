@@ -285,25 +285,74 @@ class Dashboard extends React.Component {
                 variant="outlined"
                 className = { classes.buttongroup }
               >
-                <Button value="7" onClick={this.selectedPeriod} className = { classes.button }>
+                <Button value="7" onClick={this.selectedPeriod} className = { classes.button }
+                  style = {{
+                    backgroundColor :
+                      this.state.selectedPeriod == 7 ? "white" : "",
+                    color : 
+                      this.state.selectedPeriod == 7 ? "black" : "",
+                  }}
+                >
                   7D
                 </Button>
-                <Button value="30" onClick={this.selectedPeriod} className = { classes.button }>
+                <Button value="30" onClick={this.selectedPeriod} className = { classes.button }
+                  style = {{
+                    backgroundColor :
+                      this.state.selectedPeriod == 30 ? "white" : "",
+                    color : 
+                      this.state.selectedPeriod == 30 ? "black" : "",
+                  }}
+                >
                   1M
                 </Button>
-                <Button value="90" onClick={this.selectedPeriod} className = { classes.button }>
+                <Button value="90" onClick={this.selectedPeriod} className = { classes.button }
+                  style = {{
+                    backgroundColor :
+                      this.state.selectedPeriod == 90 ? "white" : "",
+                    color : 
+                      this.state.selectedPeriod == 90 ? "black" : "",
+                  }}  
+                >
                   3M
                 </Button>
-                <Button value="180" onClick={this.selectedPeriod} className = { classes.button }>
+                <Button value="180" onClick={this.selectedPeriod} className = { classes.button }
+                  style = {{
+                    backgroundColor :
+                      this.state.selectedPeriod == 180? "white" : "",
+                    color : 
+                      this.state.selectedPeriod == 180 ? "black" : "",
+                  }}
+                >
                   6M
                 </Button>
-                <Button value="360" onClick={this.selectedPeriod} className = { classes.button }>
+                <Button value="360" onClick={this.selectedPeriod} className = { classes.button }
+                  style = {{
+                    backgroundColor :
+                      this.state.selectedPeriod == 360 ? "white" : "",
+                    color : 
+                      this.state.selectedPeriod == 360 ? "black" : "",
+                  }}
+                >
                   1Y
                 </Button>
-                <Button value="1800" onClick={this.selectedPeriod} className = { classes.button }>
+                <Button value="1800" onClick={this.selectedPeriod} className = { classes.button }
+                  style = {{
+                    backgroundColor :
+                      this.state.selectedPeriod == 1800 ? "white" : "",
+                    color : 
+                      this.state.selectedPeriod == 1800 ? "black" : "",
+                  }}
+                >
                   5Y
                 </Button>
-                <Button value="all" onClick={this.selectedPeriod} className = { classes.button }>
+                <Button value="all" onClick={this.selectedPeriod} className = { classes.button }
+                  style = {{
+                    backgroundColor :
+                      this.state.selectedPeriod == "all" ? "white" : "",
+                    color : 
+                      this.state.selectedPeriod == "all" ? "black" : "",
+                  }}
+                >
                   All
                 </Button>
               </ButtonGroup>

@@ -52,8 +52,8 @@ const styles = (theme) => ({
   },
   tooltip1: {
     backgroundColor: "white",
-    width : 280,
-    height: 200,
+    width : 270,
+    height: 160,
     color : "#05386B",
   },
   button : {
@@ -108,69 +108,73 @@ class NavigationBar extends React.Component {
     let details = JSON.parse(localStorage.getItem("details")) || [];
 
     return (
-      <Grid container className={classes.root} spacing={3}>
-        <Grid item className={classes.grid}>
-          <NavLink to="/" className={classes.link}>
-            <Typography className={classes.typography} variant="subtitle1"
-            >
-              HOME
-            </Typography>
-          </NavLink>
-        </Grid>
-        <Grid item className={classes.grid}>
-          <NavLink to="/about" className={classes.link}>
-            <Typography className={classes.typography} variant="subtitle1"
-            >
-              ABOUT
-            </Typography>
-          </NavLink>
-        </Grid>
-
-        {logged === true ? (
-          <Tooltip
-            classes={{ tooltip: classes.tooltip }}
-            title={
-              <Typography variant="subtitle2">
-                It helps to compare the performance of two or more companies at a time.
-              </Typography>
-            }
-            interactive
-          >
+      <React.Fragment>
+      <Grid container className={classes.root} spacing={1}>
+        <Grid item xs = { 11 }>
+          <Grid container justify = "center">
             <Grid item className={classes.grid}>
-              <NavLink to="/comparison" className={classes.link}>
+              <NavLink to="/" className={classes.link}>
                 <Typography className={classes.typography} variant="subtitle1"
                 >
-                  COMPARISON
+                  HOME
                 </Typography>
               </NavLink>
             </Grid>
-          </Tooltip>
-          ) : (
-            <span />
-        )}
 
-        {logged === true ? (
-          <Tooltip
-            classes={{ tooltip: classes.tooltip }}
-            title={
-              <Typography variant="subtitle2">
-                It is used to find the expected returns of each company in the coming days. 
-              </Typography>
-            }
-            interactive
-          >
             <Grid item className={classes.grid}>
-              <NavLink to="/simulation" className={classes.link} >
-                <Typography className={classes.typography} variant="subtitle1" 
+              <NavLink to="/about" className={classes.link}>
+                <Typography className={classes.typography} variant="subtitle1"
                 >
-                  SIMULATION
+                  ABOUT
                 </Typography>
               </NavLink>
             </Grid>
-          </Tooltip>
-          ) : (
-            <span />
-        )}
+
+            {logged === true ? (
+              <Tooltip
+                classes={{ tooltip: classes.tooltip }}
+                title={
+                  <Typography variant="subtitle2">
+                    It helps to compare the performance of two or more companies at a time.
+                  </Typography>
+                }
+                interactive
+              >
+                <Grid item className={classes.grid}>
+                  <NavLink to="/comparison" className={classes.link}>
+                    <Typography className={classes.typography} variant="subtitle1"
+                    >
+                      COMPARISON
+                    </Typography>
+                  </NavLink>
+                </Grid>
+              </Tooltip>
+              ) : (
+                <span />
+            )}
+
+            {logged === true ? (
+              <Tooltip
+                classes={{ tooltip: classes.tooltip }}
+                title={
+                  <Typography variant="subtitle2">
+                    It is used to find the expected returns of each company in the coming days. 
+                  </Typography>
+                }
+                interactive
+              >
+                <Grid item className={classes.grid}>
+                  <NavLink to="/simulation" className={classes.link} >
+                    <Typography className={classes.typography} variant="subtitle1" 
+                    >
+                      SIMULATION
+                    </Typography>
+                  </NavLink>
+                </Grid>
+              </Tooltip>
+              ) : (
+                <span />
+            )}
 
             {/* <Grid item className={classes.grid}>
               <Autocomplete
@@ -199,92 +203,100 @@ class NavigationBar extends React.Component {
             </Grid> */}
 
         
-        { logged === false || logged === null ? (
-          <Grid item className={classes.grid}>
-            <NavLink to="/login" className={classes.link} >
-              <Typography className={classes.typography} variant="subtitle1" 
-              >
-                SIGN IN
-              </Typography>
-            </NavLink>
-          </Grid> ) : (
-            <span />
-        )}
+            { logged === false || logged === null ? (
+              <Grid item className={classes.grid}>
+                <NavLink to="/login" className={classes.link} >
+                  <Typography className={classes.typography} variant="subtitle1" 
+                  >
+                    SIGN IN
+                  </Typography>
+                </NavLink>
+              </Grid> ) : (
+                <span />
+            )}
 
-        { logged === false || logged === null ? (
-          <Grid item className={classes.grid}>
-            <NavLink to="/signup" className={classes.link}>
-              <Typography className={classes.typography} variant="subtitle1" 
-              >
-                SIGN UP
-              </Typography>
-            </NavLink>
+            { logged === false || logged === null ? (
+              <Grid item className={classes.grid}>
+                <NavLink to="/signup" className={classes.link}>
+                  <Typography className={classes.typography} variant="subtitle1" 
+                  >
+                    SIGN UP
+                  </Typography>
+                </NavLink>
+              </Grid>
+            ) : (
+              <span/>
+            )}
           </Grid>
-         ) : (
-          <span/>
-        )}
+        </Grid>
 
         
+        <Grid item xs = { 1 }>
+          <Grid container justify = "flex-end">
+            {logged == true ? (
+              <Grid item >
+                <Tooltip
+                  classes={{ tooltip: classes.tooltip1 }}
+                  interactive
+                  title={
+                    <List>
+                      {Object.keys(details).map((key) => {
+                        console.log(key);
+                        if (key === "_id" || key == "password" || key == "lastName") {
+                          return;
+                        }
+                        var value = "";
+                        if (key === "firstName") {
+                          value = details[key] + " " + details["lastName"];
+                        } else {
+                          value = details[key];
+                        }
 
-        {logged == true ? (
-          <Grid item >
-            <Tooltip
-              classes={{ tooltip: classes.tooltip1 }}
-              interactive
-              title={
-                <List>
-                  {Object.keys(details).map((key) => {
-                    if (key === "_id" || key == "password") {
-                      return;
-                    }
-                    const value = details[key];
-                    // const space = " :: ";
-                    // const property = key.toUpperCase()
-                    return (
-                      <ListItem key={key}>
-                        <ListItemText
-                          classes = {{ primary: classes.listitemtext }}
-                          primary = {value}
-                          style = {{
-                            fontSize : 6,
+                        // const space = " :: ";
+                        // const property = key.toUpperCase()
+                        return (
+                          <ListItem key={key}>
+                            <ListItemText
+                              classes = {{ primary: classes.listitemtext }}
+                              primary = {value}
+                              style = {{
+                                fontSize : 6,
+                              }}
+                            
+                            ></ListItemText>
+                          </ListItem>
+                        );
+                      })}
+                      <ListItem>
+                        <Button
+                          className = { classes.button }
+                          variant="contained"
+                          size = "small"
+                          onClick={() => {
+                            window.localStorage.clear();
+                            // localStorage.setItem("logged", JSON.stringify(false));
+                            this.props.modifyOpen(false);
+                            history.push("/");
                           }}
-                        
-                        ></ListItemText>
+                        >
+                          Log Out
+                        </Button>
                       </ListItem>
-                    );
-                  })}
-                  <ListItem>
-                    <Button
-                      className = { classes.button }
-                      variant="contained"
-                      size = "small"
-                      onClick={() => {
-                        window.localStorage.clear();
-                        // localStorage.setItem("logged", JSON.stringify(false));
-                        this.props.modifyOpen(false);
-                        history.push("/");
-                      }}
-                    >
-                      Log Out
-                    </Button>
-                  </ListItem>
-                </List>
-              }
-            >
-              <IconButton>
-                <AccountCircleIcon className={classes.largeIcon} />
-              </IconButton>
-            </Tooltip>
+                    </List>
+                  }
+                >
+                  <IconButton>
+                    <AccountCircleIcon className={classes.largeIcon} />
+                  </IconButton>
+                </Tooltip>
+              </Grid>
+            ) : (
+              <span />
+            )}
+            </Grid>
           </Grid>
-        ) : (
-          <span />
-        )}
-
-
-
-
-
         </Grid>
+        </React.Fragment>
     );
   }
 }

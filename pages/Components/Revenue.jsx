@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import Loader from "react-loader-spinner";
-import { GRID_HEADER_CELL_SEPARATOR_RESIZABLE_CSS_CLASS } from "@material-ui/data-grid";
+
 
 const styles = (theme) => ({
   paper : {

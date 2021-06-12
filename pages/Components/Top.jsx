@@ -101,7 +101,7 @@ class Top extends React.Component {
                 >
                   <Paper
                     elevation={0}
-                    style={{ display: "flex", padding: "10px", margin: "10px" }}
+                    style={{ display: "flex", padding: "10px", margin: "10px", justifyContent: "center", }}
                     className = { classes.paper }
                   >
                     <Typography variant="subtitle2">{company}</Typography>
