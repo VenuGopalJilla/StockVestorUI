@@ -22,7 +22,7 @@ export default async (req, res, next) => {
             .then((t) => {
               if (t.status === 200) {
                 let nums = 0;
-                let stockdetails = [];
+                let nums1 = 0;
                 let rows = t.data.split("\n");
                 const header = rows[0].split(",");
                 const cpgr = header.indexOf("Close Price GR");
@@ -33,11 +33,15 @@ export default async (req, res, next) => {
                   if (cols[cpgr] > rate) {
                     nums = nums + 1;
                   }
+                  if (cols[cpgr] < (-1 * rate)) {
+                    nums1 = nums1 + 1;
+                  }
                 }
                 const response = {
                   company: company,
                   numberOfDays: nums,
                   percentOfDays: ((nums / days) * 100).toFixed(3),
+                  percentOfDays1 : (( nums1 / days) * 100).toFixed(3),
                   totalNumberOfDays: days,
                   rate: rate * 100,
                 };

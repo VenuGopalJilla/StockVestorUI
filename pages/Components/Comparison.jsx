@@ -242,6 +242,7 @@ class Comparison extends React.Component {
             >
               {Object.keys(this.state.stockdetails).map((company) => {
                 const element = this.state.stockdetails[company];
+                console.log(element);
                 return (
                   <Grid item xs={6}>
                     <Paper
@@ -262,10 +263,15 @@ class Comparison extends React.Component {
                         </Typography>
                       </NavLink>
                     </Paper>
-                    <Typography variant="h6">
+                    <Typography variant="subtitle1">
                       In the last {period[element["totalNumberOfDays"]]}, for{" "}
-                      {element["percentOfDays"]} percent of trading days close
-                      price growth rate was more than {element["rate"]} %
+                      {element["percentOfDays"]} percent of trading days, Close
+                      Price positive growth rate was more than {element["rate"]} %
+                    </Typography>
+                    <Typography variant="subtitle1">
+                      In the last {period[element["totalNumberOfDays"]]}, for{" "}
+                      {element["percentOfDays1"]} percent of trading days, Close
+                      Price negative growth rate was more than {element["rate"]} %
                     </Typography>
                     <Dashboard company={element["company"]} />
                     {this.state.stockkeys.map((key, i) => {
