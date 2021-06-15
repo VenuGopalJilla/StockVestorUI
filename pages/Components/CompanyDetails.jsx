@@ -5,11 +5,21 @@ import {
   Paper,
   Typography,
   withStyles,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Collapse ,
 } from "@material-ui/core";
 import React from "react";
 import axios from "axios";
 import Dashboard from "./Dashboard";
 import Loader from "react-loader-spinner";
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+
 
 
 const styles = (theme) => ({
@@ -19,6 +29,13 @@ const styles = (theme) => ({
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
+  },
+  table: {
+    minWidth: 5, 
+  },
+  tableCell : {
+    color: "#05386B",
+    fontWeight : 'bold',
   },
 });
 
@@ -45,6 +62,7 @@ class CompanyDetails extends React.Component {
         "Spread Close-Open",
       ],
       stockdetails: [],
+      open: false,
     };
   }
 
@@ -92,6 +110,7 @@ class CompanyDetails extends React.Component {
   };
 
   render() {
+    const { classes } = this.props;
     return (
       <React.Fragment>
         {this.state.selectedCompany !== "" && (
@@ -114,39 +133,54 @@ class CompanyDetails extends React.Component {
               <Loader type="ThreeDots" color="#05386B" height={80} width={80}/>
             ) : (
               <Grid container>
-                {Object.keys(this.state.companyDetails).map((key) => {
-                  
-                  if (this.state.companyDetails[key] === null) {
-                    return <span></span>;
-                  }
-                  if (key === "suggest" && (this.state.companyDetails[key] === "buy" || this.state.companyDetails[key] === "sell") ) {
-                    let res = "SUGGESTION " + " -- " + this.state.companyDetails[key].toUpperCase();
-                    return (
-                      <Chip
-                        color="primary"
-                        variant="outlined"
-                        label={res}
-                        style={{ margin: "5px",
-                        backgroundColor: "#05386B",
-                        color : "#5CDB95"}}
-                      />
-                    ); 
-                  } else {
+                <Grid item xs = {4}>
+                  <Paper>
+                    {Object.keys(this.state.companyDetails).map((key) => {
+                      if (this.state.companyDetails[key] === null) {
+                        return <span></span>;
+                      }
+                      if (key === "suggest") {
+                        return <span></span>;
+                      } else {
+                        return (
+                            <TableContainer component={Paper}>
+                              <Table className={classes.table} size="small" aria-label="a dense table">
+                                <TableBody>
+                                    <TableRow key={key}>
+                                      <TableCell className = { classes.tableCell } component="th" scope="row">
+                                        {key}
+                                      </TableCell>
+                                      <TableCell className = { classes.tableCell } align="right">{this.state.companyDetails[key]}</TableCell>
+                                    </TableRow>
+                                </TableBody>
+                              </Table>
+                            </TableContainer>
+                        ); 
+                      }
                     
-                    let res = key + " : " + this.state.companyDetails[key];
-                    return (
-                      <Chip
-                        color="primary"
-                        variant="outlined"
-                        label={res}
-                        style={{ margin: "5px",
-                        backgroundColor: "#5CDB95",
-                        color :  "#05386B"}}
-                      />
-                    ); 
-                  }
-                
-                })}
+                    })}
+                  </Paper>
+                </Grid>
+                <Grid item xs = { 4 }>
+                  {Object.keys(this.state.companyDetails).map((key) => {
+                    let value = "";
+                    if (this.state.companyDetails[key] === null) {
+                      return <span></span>;
+                    }
+                    if (key === "suggest") {
+                      if (this.state.companyDetails[key] === "buy" || this.state.companyDetails[key] === "sell") {
+                        value = this.state.companyDetails[key].toUpperCase();
+                      } else {
+                        value = "HOLD";
+                      }
+                      return (
+                        <span>
+                        
+                        </span>
+                      );
+                    }
+                  })}
+                </Grid>
               </Grid>
             )}
           </div>
@@ -191,4 +225,6 @@ class CompanyDetails extends React.Component {
     );
   }
 }
-export default withStyles(styles)(CompanyDetails);
+
+
+export default withStyles(styles, { withTheme: true })(CompanyDetails);
