@@ -1,6 +1,5 @@
 import {
   Chip,
-  Divider,
   Grid,
   Paper,
   Typography,
@@ -11,7 +10,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Collapse ,
+  Tooltip,
+  Button,
 } from "@material-ui/core";
 import React from "react";
 import axios from "axios";
@@ -31,11 +31,30 @@ const styles = (theme) => ({
     marginTop: theme.spacing(2),
   },
   table: {
-    minWidth: 5, 
+    Width: 10, 
   },
   tableCell : {
     color: "#05386B",
     fontWeight : 'bold',
+  },
+  suggestionTable: {
+    width: 20,
+  },
+  suggestionTableCell : {
+    color: "#05386B",
+    fontWeight : 'bold',
+    align: "center", 
+  },
+  tooltip: {
+    backgroundColor: "white",
+    width : 250,
+    height: 100,
+    color : "#05386B",
+  },
+  tooltip1: {
+    backgroundColor: "#379683",
+    maxWidth: "none",
+    color : "#EDF5E1",
   },
 });
 
@@ -46,13 +65,17 @@ class CompanyDetails extends React.Component {
       companyDetails: [],
       companyCurrentDayStockDetails: [],
       selectedCompany: "",
-      loading: true,
-      stockkeys: [
+      companyDetailsLoading: true,
+      stockDetailsLoading: true,
+      suggestionLoading: true,
+      impStockkeys: [
         "Date",
         "Open Price",
         "High Price",
         "Low Price",
         "Close Price",
+      ],
+      otherStockkeys: [
         "WAP",
         "No.of Shares",
         "No. of Trades",
@@ -62,7 +85,7 @@ class CompanyDetails extends React.Component {
         "Spread Close-Open",
       ],
       stockdetails: [],
-      open: false,
+      suggestion: "",
     };
   }
 
@@ -71,43 +94,68 @@ class CompanyDetails extends React.Component {
     const { match } = this.props;
     const company = match.params.company;
     this.setState({ selectedCompany: company }, () => {
-      this.getCompanyDetails(this.state.selectedCompany);
+      this.getDetails(this.state.selectedCompany);
     });
   };
+
+
+  getDetails = async(company) => {
+    this.getCompanyDetails(company);
+    this.getStockDetails(company);
+    this.getSuggestion(company);
+  }
 
   getCompanyDetails = async (company) => {
     await axios.get("/api/companydetails?company=" + company).then((s) => {
       if (s.status === 200) {
         let companyDetails = s.data;
-        axios
-        .get("/api/getsuggestions?company=" + company)
-        .then((t) => {
-          if (t.status === 200) {
-            companyDetails = Object.assign(companyDetails, t.data);
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-        this.setState({ companyDetails: companyDetails, loading: false }, () => {});
+        this.setState({ companyDetails: companyDetails, companyDetailsLoading: false }, () => {});
       } else {
-        this.setState({ companyDetails: [], loading: false }, () => {});
+        this.setState({ companyDetails: [], companyDetailsLoading: false }, () => {});
       }
+    })
+    .catch((e) => {
+      console.log(e);
+      this.setState({ companyDetails: [], companyDetailsLoading: false }, () => {});
     });
+  };
+
+
+  getStockDetails = async(company) => {
     await axios
       .get("/api/previousdaystockdetails?company=" + company)
       .then((s) => {
         if (s.status === 200) {
-          this.setState({ stockdetails: s.data, loading: false }, () => {});
+          this.setState({ stockdetails: s.data, stockDetailsLoading: false }, () => {});
         } else {
-          this.setState({ stockdetails: [], loading: false }, () => {});
+          this.setState({ stockdetails: [], stockDetailsLoading: false }, () => {});
         }
       })
       .catch((e) => {
         console.log(e);
-        this.setState({ stockdetails: [], loading: false }, () => {});
+        this.setState({ stockdetails: [], stockDetailsLoading: false }, () => {});
       });
   };
+
+  getSuggestion = async(company) => {
+    await axios
+        .get("/api/getsuggestions?company=" + company)
+        .then((t) => {
+          if (t.status === 200) {
+            let suggest = t.data["suggest"];
+            if (suggest.length === 0) {
+              suggest = "hold";
+            }
+            this.setState({ suggestion: suggest, suggestionLoading: false }, () => {});
+          } else {
+            this.setState({ suggestion: "", suggestionLoading: false }, () => {});
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          this.setState({ suggestion: "", suggestionLoading: false }, () => {});
+        });
+  }
 
   render() {
     const { classes } = this.props;
@@ -128,11 +176,16 @@ class CompanyDetails extends React.Component {
             >
               <Typography variant="subtitle1" >{this.state.selectedCompany}</Typography>
             </Paper>
-            {/* <Divider /> */}
-            {this.state.loading === true ? (
+            <div style = {{ padding : "30px"}}></div>
+            <Grid 
+              container
+              spacing={3}
+              justify="center"
+              alignItems="center"
+            >
+            {this.state.companyDetailsLoading === true ? (
               <Loader type="ThreeDots" color="#05386B" height={80} width={80}/>
             ) : (
-              <Grid container>
                 <Grid item xs = {4}>
                   <Paper>
                     {Object.keys(this.state.companyDetails).map((key) => {
@@ -161,62 +214,188 @@ class CompanyDetails extends React.Component {
                     })}
                   </Paper>
                 </Grid>
-                <Grid item xs = { 4 }>
-                  {Object.keys(this.state.companyDetails).map((key) => {
-                    let value = "";
-                    if (this.state.companyDetails[key] === null) {
-                      return <span></span>;
-                    }
-                    if (key === "suggest") {
-                      if (this.state.companyDetails[key] === "buy" || this.state.companyDetails[key] === "sell") {
-                        value = this.state.companyDetails[key].toUpperCase();
-                      } else {
-                        value = "HOLD";
-                      }
-                      return (
-                        <span>
-                        
-                        </span>
-                      );
-                    }
-                  })}
+                )}
+                {this.state.suggestionLoading === true ? (
+                  <Loader type="ThreeDots" color="#05386B" height={80} width={80}/>
+                ) : (
+                <Grid item xs = { 2.5 }>
+                    <TableContainer component={Paper} style = {{ width : 127}}>
+                      <Table className={classes.suggestionTable} aria-label="simple table">
+                        <TableHead>
+                          <TableRow>
+                            <TableCell 
+                              style={{
+                                background: "#05386B",
+                                color : "#5CDB95",
+                              }}
+                              >SUGGESTION</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {this.state.suggestion == "buy" ? (
+                            <Tooltip
+                              classes={{ tooltip: classes.tooltip }}
+                              placement="top"
+                              title={
+                                <Typography>Its actual returns percentage is closer to the predicted Upper Band.</Typography>
+                              }
+                              interactive
+                            >
+                             <TableRow>
+                                <TableCell  
+                                  className = { classes.suggestionTableCell } 
+                                  style={{
+                                    background: "#379683",
+                                    color : "#EDF5E1",
+                                  }}
+                                  >
+                                  BUY
+                                </TableCell>
+                              </TableRow>
+                            </Tooltip>
+                          ) : (
+                            <TableRow>
+                                <TableCell  
+                                  className = { classes.suggestionTableCell } 
+                                  style={{
+                                    background: "white",
+                                    color : "#05386B",
+                                  }}
+                                  >
+                                  BUY
+                                </TableCell>
+                              </TableRow>
+                          )}
+                          {this.state.suggestion == "sell" ? (
+                            <Tooltip
+                              classes={{ tooltip: classes.tooltip }}
+                              placement="right-end"
+                              title={
+                                <Typography>Its actual returns percentage is closer to the predicted Lower Band.</Typography>
+                              }
+                              interactive
+                            >
+                             <TableRow>
+                                <TableCell  
+                                  className = { classes.suggestionTableCell } 
+                                  style={{
+                                    background: "#379683",
+                                    color : "#EDF5E1",
+                                  }}
+                                  >
+                                  SELL
+                                </TableCell>
+                              </TableRow>
+                            </Tooltip>
+                          ) : (
+                            <TableRow>
+                                <TableCell  
+                                  className = { classes.suggestionTableCell } 
+                                  style={{
+                                    background: "white",
+                                    color : "#05386B",
+                                  }}
+                                  >
+                                  SELL
+                                </TableCell>
+                              </TableRow>
+                          )}
+                          {this.state.suggestion == "hold" ? (
+                            <Tooltip
+                              classes={{ tooltip: classes.tooltip }}
+                              placement="bottom"
+                              title={
+                                <Typography>Its actual returns percentage is neither closer to the predicted Upper Band nor predicted Lower band.</Typography>
+                              }
+                              interactive
+                            >
+                             <TableRow>
+                                <TableCell  
+                                  className = { classes.suggestionTableCell } 
+                                  style={{
+                                    background: "#379683",
+                                    color : "#EDF5E1",
+                                  }}
+                                  >
+                                  HOLD
+                                </TableCell>
+                              </TableRow>
+                            </Tooltip>
+                          ) : (
+                            <TableRow>
+                                <TableCell  
+                                  className = { classes.suggestionTableCell } 
+                                  style={{
+                                    background: "white",
+                                    color : "#05386B",
+                                  }}
+                                  >
+                                  HOLD
+                                </TableCell>
+                              </TableRow>
+                          )}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
                 </Grid>
+                )}
+
+                { this.state.stockDetailsLoading == true ? (
+                  <Loader type="ThreeDots" color="#05386B" height={80} width={80}/>
+                ) : (
+                  <Grid item xs = { 4 }>
+                    { this.state.impStockkeys.map((key) => {
+                      return (
+                          <TableContainer component={Paper}>
+                              <Table className={classes.table} size="small" aria-label="a dense table">
+                                <TableBody>
+                                    <TableRow key={key}>
+                                      <TableCell className = { classes.tableCell } component="th" scope="row">
+                                        {key}
+                                      </TableCell>
+                                      <TableCell className = { classes.tableCell } align="right">{this.state.stockdetails[key]}</TableCell>
+                                    </TableRow>
+                                </TableBody>
+                              </Table>
+                            </TableContainer>
+                      );
+                      }
+                    )}
+                    <Tooltip
+                      classes={{ tooltip: classes.tooltip1 }}
+                      placement="right-end"
+                      title={
+                        <TableRow>
+                          {this.state.otherStockkeys.map((key) => {
+                            return (
+                              <TableRow>
+                                <TableCell>{key}</TableCell>
+                                <TableCell align="right">
+                                  {this.state.stockdetails[key]}
+                                </TableCell>
+                              </TableRow>
+                            );
+                          })}
+                        </TableRow>
+                      }
+                      interactive
+                    >
+                      <Button variant="outlined" size = "small"
+                        style = {{
+                          backgroundColor: "#05386B",
+                          color : "#EDF5E1"
+                        }}
+                      >
+                        MORE DETAILS
+                      </Button>
+                    </Tooltip>
+
+                  </Grid>
+                )}
               </Grid>
-            )}
           </div>
         )}
-        {/* <Divider />
-        <Divider /> */}
-        {this.state.stockdetails.length !== 0 &&
-          this.state.stockkeys.map((key) => {
-            let impKeys = ["Open Price", "High Price", "Low Price", "Close Price"];
-            
-            if (impKeys.includes(key)) {
-              let res = key.toUpperCase() + " : " + this.state.stockdetails[key];
-              return (
-                <Chip
-                  color="primary"
-                  variant="outlined"
-                  label={res}
-                  style={{ margin: "5px",
-                  backgroundColor: "#05386B",
-                  color : "#5CDB95"}}
-                />
-              ); 
-            } else {
-            let res = key + " : " + this.state.stockdetails[key];
-            return (
-              <Chip
-                color="primary"
-                variant="outlined"
-                label={res}
-                style={{ margin: "5px",
-                backgroundColor: "#5CDB95",
-                color :  "#05386B" }}
-              />
-            );
-          }
-          })}
+        <div style = {{ padding : "30px"}}></div>
         {this.state.selectedCompany !== "" &&
           this.state.stockdetails.length !== 0 && (
             <Dashboard company={this.state.selectedCompany} />
