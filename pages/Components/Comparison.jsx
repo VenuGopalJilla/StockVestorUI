@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import underscore from "underscore";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import { withStyles } from "@material-ui/core/styles";
 
 import {
   FormControl,
@@ -14,11 +15,20 @@ import {
   Typography,
   TextField,
   Chip,
-  Divider,
+  Tooltip,
 } from "@material-ui/core";
 import Loader from "react-loader-spinner";
 import { NavLink } from "react-router-dom";
 import Dashboard from "./Dashboard";
+
+
+const styles = (theme) => ({
+  tooltip: {
+    backgroundColor: "white",
+    color: "#05386B",
+    maxWidth: "none"
+  }
+});
 
 class Comparison extends React.Component {
   constructor(props) {
@@ -57,6 +67,7 @@ class Comparison extends React.Component {
       stockdetails: [],
       num: 10,
       error: "",
+      tooltipopen: false
     };
   }
 
@@ -130,6 +141,9 @@ class Comparison extends React.Component {
 
   render() {
     const period = underscore.invert(this.state.timePeriod);
+    let logged = JSON.parse(localStorage.getItem("logged"));
+    const { classes } = this.props;
+
     return (
       <React.Fragment>
         <Grid
@@ -214,17 +228,34 @@ class Comparison extends React.Component {
             />
           </Grid>
           <Grid item>
-            <Button
-              variant="outlined"
-              size="large"
-              onClick={this.onClickSubmit}
-              style = {{
-                backgroundColor: "#05386B",
-                color : "#5CDB95"
-              }}
-            >
-              Submit
-            </Button>
+            <Tooltip
+                  open={this.state.tooltipopen}
+                  classes={{ tooltip: classes.tooltip }}
+                  title={
+                    <Typography variant="h6" className={classes.primary}>
+                      sign in to access
+                    </Typography>
+                  }
+                  interactive
+                >
+              <Button
+                variant="outlined"
+                size="large"
+                onClick={() => {
+                  if (logged === true) {
+                    this.onClickSubmit();
+                  } else {
+                    this.setState({ tooltipopen: !this.state.tooltipopen });
+                  }
+                }}
+                style = {{
+                  backgroundColor: "#05386B",
+                  color : "#5CDB95"
+                }}
+              >
+                Submit
+              </Button>
+            </Tooltip>
           </Grid>
         </Grid>
         {/* <Divider />
@@ -296,4 +327,4 @@ class Comparison extends React.Component {
   }
 }
 
-export default Comparison;
+export default withStyles(styles, { withTheme: true })(Comparison);

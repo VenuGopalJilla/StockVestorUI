@@ -46,14 +46,11 @@ class Main extends React.Component {
   }
   componentDidMount = () => {
     console.log("Main");
-    const logged = JSON.parse(localStorage.getItem("logged"));
-    if (logged == true) {
-      const companyNames = JSON.parse(localStorage.getItem("companyNames"));
-      if (companyNames != null) {
-        return;
-      }
-      this.getCompanyNames();
+    const companyNames = JSON.parse(localStorage.getItem("companyNames"));
+    if (companyNames != null) {
+      return;
     }
+    this.getCompanyNames();
   };
 
   getCompanyNames = () => {
@@ -133,7 +130,7 @@ class Main extends React.Component {
               </Typography>
             </Grid>
             <Grid item>
-              <Tooltip
+              {/* <Tooltip
                 title={
                   logged == null || logged == false ? (
                     <Typography variant="h5">sign in to access</Typography>
@@ -142,9 +139,9 @@ class Main extends React.Component {
                   )
                 }
                 classes={{ tooltip: classes.tooltip }}
-              >
+              > */}
                 <Autocomplete
-                  disabled={logged != true}
+                  // disabled={logged != true}
                   style={{
                     width: 400,
                   }}
@@ -174,7 +171,7 @@ class Main extends React.Component {
                     />
                   )}
                 />
-              </Tooltip>
+              {/* </Tooltip> */}
             </Grid>
             <Grid item>
               <img

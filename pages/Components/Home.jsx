@@ -197,9 +197,6 @@ class Home extends React.Component {
                 exact
                 path="/top/:num/:type"
                 render={(props) => {
-                  if (logged == null || logged === false) {
-                    return <Redirect to="/login" />;
-                  }
                   const {
                     match: {
                       params: { num, type },
@@ -212,9 +209,6 @@ class Home extends React.Component {
                 exact 
                 path="/sectors"
                 render={(props) => {
-                  if (logged == null || logged === false) {
-                    return <Redirect to="/login" />;
-                  }
                   return <Sectors />;
                 }}
                 />
@@ -222,9 +216,6 @@ class Home extends React.Component {
                 exact
                 path="/companydetails/:company"
                 render={(props) => {
-                  if (logged == null || logged === false) {
-                    return <Redirect to="/login" />;
-                  }
                   const {
                     match: {
                       params: { company },
@@ -239,9 +230,6 @@ class Home extends React.Component {
                 exact
                 path="/revenue"
                 render={(props) => {
-                  if (logged == null || logged === false) {
-                    return <Redirect to="/login" />;
-                  }
                   return <Revenue companyNames={this.state.companyNames} />;
                 }}
               />
@@ -249,9 +237,6 @@ class Home extends React.Component {
                 exact 
                 path="/sp500"
                 render={(props) => {
-                  if (logged == null || logged === false) {
-                    return <Redirect to="/login" />;
-                  }
                   return <SP500 />;
                 }}
                 />
@@ -259,18 +244,12 @@ class Home extends React.Component {
                 exact 
                 path="/comparison" 
                 render={(props) => {
-                  if (logged == null || logged === false) {
-                    return <Redirect to="/login" />;
-                  }
                   return <Comparison />;
                 }}/>
               <Route 
                 exact 
                 path="/simulation"
                 render={(props) => {
-                  if (logged == null || logged === false) {
-                    return <Redirect to="/login" />;
-                  }
                   return <Simulation />;
                 }}
                 />
