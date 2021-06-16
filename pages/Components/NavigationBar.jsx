@@ -130,51 +130,45 @@ class NavigationBar extends React.Component {
               </NavLink>
             </Grid>
 
-            {logged === true ? (
-              <Tooltip
-                classes={{ tooltip: classes.tooltip }}
-                title={
-                  <Typography variant="subtitle2">
-                    It helps to compare the performance of two or more companies at a time.
+            <Tooltip
+              classes={{ tooltip: classes.tooltip }}
+              title={
+                <Typography variant="subtitle2">
+                  It helps to compare the performance of two or more companies at a time.
+                </Typography>
+              }
+              interactive
+            >
+              <Grid item className={classes.grid}>
+                <NavLink to="/comparison" className={classes.link} activeStyle={{ color: "#EDF5E1" }}>
+                  <Typography className={classes.typography} variant="subtitle1"
+                  >
+                    COMPARISON
                   </Typography>
-                }
-                interactive
-              >
-                <Grid item className={classes.grid}>
-                  <NavLink to="/comparison" className={classes.link} activeStyle={{ color: "#EDF5E1" }}>
-                    <Typography className={classes.typography} variant="subtitle1"
-                    >
-                      COMPARISON
-                    </Typography>
-                  </NavLink>
-                </Grid>
-              </Tooltip>
-              ) : (
-                <span />
-            )}
+                </NavLink>
+              </Grid>
+            </Tooltip>
 
-            {logged === true ? (
-              <Tooltip
-                classes={{ tooltip: classes.tooltip }}
-                title={
-                  <Typography variant="subtitle2">
-                    It is used to find the expected returns of each company in the coming days. 
+            
+            <Tooltip
+              classes={{ tooltip: classes.tooltip }}
+              title={
+                <Typography variant="subtitle2">
+                  It is used to find the expected returns of each company in the coming days. 
+                </Typography>
+              }
+              interactive
+            >
+              <Grid item className={classes.grid}>
+                <NavLink to="/simulation" className={classes.link} activeStyle={{ color: "#EDF5E1" }}>
+                  <Typography className={classes.typography} variant="subtitle1" 
+                  >
+                    SIMULATION
                   </Typography>
-                }
-                interactive
-              >
-                <Grid item className={classes.grid}>
-                  <NavLink to="/simulation" className={classes.link} activeStyle={{ color: "#EDF5E1" }}>
-                    <Typography className={classes.typography} variant="subtitle1" 
-                    >
-                      SIMULATION
-                    </Typography>
-                  </NavLink>
-                </Grid>
-              </Tooltip>
-              ) : (
-                <span />
-            )}
+                </NavLink>
+              </Grid>
+            </Tooltip>
+              
 
             
             { logged === false || logged === null ? (
