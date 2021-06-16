@@ -7,6 +7,7 @@ import {
   MenuItem,
   Paper,
   Typography,
+  Tooltip,
 } from "@material-ui/core";
 import axios from "axios";
 import underscore from "underscore";
@@ -14,8 +15,7 @@ import {
   GridToolbarContainer,
   GridToolbarExport,
 } from "@material-ui/data-grid";
-
-
+import { withStyles } from "@material-ui/core/styles";
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -23,6 +23,14 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+
+const styles = (theme) => ({
+  tooltip: {
+    backgroundColor: "white",
+    color: "#05386B",
+    maxWidth: "none"
+  }
+});
 
 
 class Simulation extends React.Component {
@@ -41,6 +49,7 @@ class Simulation extends React.Component {
       simulationtop: [],
       companyselectedaftersimulation : "",
       companydetailsaftersimulation : [],
+      tooltipopen: false,
     };
   }
 
@@ -152,7 +161,8 @@ class Simulation extends React.Component {
   };
 
   render() {
-    const today = new Date();
+    let logged = JSON.parse(localStorage.getItem("logged"));
+    const { classes } = this.props;
     return (
       <React.Fragment>
         <Grid>
@@ -161,69 +171,86 @@ class Simulation extends React.Component {
             padding : '3px'
           }}>
           </div>
-          <FormControl style={{ minWidth: "150px" }} variant="outlined">
-            <InputLabel style = {{ color : "#5CDB95"}}>days</InputLabel>
-            <Select
-              style={{ 
-                width: "100%",
-                backgroundColor: "#05386B",
-                color: "#5CDB95"
-               }}
-              labelId="days"
-              id="days"
-              onChange={this.onSelectDays}
-              value={this.state.seldays}
-            >
-              {[30, 60, 90, 180, 360, 720].map(
-                (period) => {
-                  return <MenuItem value={period}>{period}</MenuItem>;
-                }
-              )}
-            </Select>
-          </FormControl>
+
+          <Tooltip
+            open={this.state.tooltipopen}
+            classes={{ tooltip: classes.tooltip }}
+            title={
+              <Typography variant="h6" className={classes.primary}>
+                sign in to access
+              </Typography>
+            }
+            interactive
+          >
+            <FormControl style={{ minWidth: "150px" }} variant="outlined">
+              <InputLabel style = {{ color : "#5CDB95"}}>days</InputLabel>
+              <Select
+                style={{ 
+                  width: "100%",
+                  backgroundColor: "#05386B",
+                  color: "#5CDB95"
+                }}
+                labelId="days"
+                id="days"
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (logged === true) {
+                    this.onSelectDays(e);
+                  } else {
+                    this.setState({
+                      days: val,
+                      tooltipopen: true
+                    });
+                  }
+                }}
+                value={this.state.seldays}
+              >
+                {[30, 60, 90, 180, 360, 720].map(
+                  (period) => {
+                    return <MenuItem value={period}>{period}</MenuItem>;
+                  }
+                )}
+              </Select>
+            </FormControl>
+          </Tooltip>
+
           <div style = {{
             padding : '20px',
           }}></div>
-          {this.state.simulationtop.length === 0 ? (
-            <span />
+
+          { this.state.loading ? (
+            <Loader type="ThreeDots" color="#05386B" height={80} width={80}/>
           ) : (
-            <TableContainer component={Paper}>
-              <Table className="Simualtion Results" minWidth= "650" aria-label="simple table">
-                <TableHead style = {{ color : "#05386B", backgroundColor: "#5CDB95",}}>
-                  <TableRow>
-                    <TableCell variant = "h5"> Security Id</TableCell>
-                    <TableCell align="right" variant = "h5">Company</TableCell>
-                    <TableCell align="right" variant = "h5">Actual Average Returns</TableCell>
-                    <TableCell align="right" variant = "h5">Minimum Prediction Range</TableCell>
-                    <TableCell align="right" variant = "h5">Maximum Prediction Range</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {this.state.simulationtop.map((row) => {
-                    console.log(row);
-                    return (
-                    <TableRow key={row.Company}>
-                      <TableCell component="th" scope="row">
-                        {row.security_id}
-                      </TableCell>
-                      <TableCell align="right">{row.company}</TableCell>
-                      <TableCell align="right">{row.actual_average_return_percent}</TableCell>
-                      <TableCell align="right">{row.minimum_prediction_range}</TableCell>
-                      <TableCell align="right">{row.maximum_prediction_range}</TableCell>
-                      {/* <TableCell align="right">
-                      <DownloadLink
-                        label = "Results"
-                        filename = {row["security_id"] + "_" + this.state.seldays + ".csv"}
-                        tagName = "button"
-                        // exportFile = {() =>  Promise.resolve(this. getDataFromURL("https://raw.githubusercontent.com/VenuGopalJilla/StockAnalysisTool/main/Data/SP500_simulation_results/" + row["security_id"] + "_" + this.state.seldays + "days.csv"))}
-                        exportFile = {() =>  Promise.resolve(this. getDataFromURL("https://raw.githubusercontent.com/saikr789/stock-index-risk/master/Data/SimulationResult/" + row["security_id"] + "_" + this.state.seldays + ".csv"))}
-                          />
-                      </TableCell> */}
-                    </TableRow>
-                  )})}
-                </TableBody>
-              </Table>
-            </TableContainer>
+              this.state.simulationtop.length != 0 && (
+                <TableContainer component={Paper}>
+                  <Table className="Simualtion Results" minWidth= "650" aria-label="simple table">
+                    <TableHead style = {{ color : "#05386B", backgroundColor: "#5CDB95",}}>
+                      <TableRow>
+                        <TableCell variant = "h5"> Security Id</TableCell>
+                        <TableCell align="right" variant = "h5">Company</TableCell>
+                        <TableCell align="right" variant = "h5">Actual Average Returns</TableCell>
+                        <TableCell align="right" variant = "h5">Minimum Prediction Range</TableCell>
+                        <TableCell align="right" variant = "h5">Maximum Prediction Range</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {this.state.simulationtop.map((row) => {
+                        console.log(row);
+                        return (
+                        <TableRow key={row.Company}>
+                          <TableCell component="th" scope="row">
+                            {row.security_id}
+                          </TableCell>
+                          <TableCell align="right">{row.company}</TableCell>
+                          <TableCell align="right">{row.actual_average_return_percent}</TableCell>
+                          <TableCell align="right">{row.minimum_prediction_range}</TableCell>
+                          <TableCell align="right">{row.maximum_prediction_range}</TableCell>
+                        </TableRow>
+                      )})}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              )
           )}
         </Grid>
       </React.Fragment>
@@ -231,4 +258,5 @@ class Simulation extends React.Component {
   }
 }
 
-export default Simulation;
+
+export default withStyles(styles, { withTheme: true })(Simulation);
