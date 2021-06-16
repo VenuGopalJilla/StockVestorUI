@@ -110,8 +110,8 @@ class NavigationBar extends React.Component {
     return (
       <React.Fragment>
       <Grid container className={classes.root} spacing={1}>
-        <Grid item xs = { 11 }>
-          <Grid container justify = "center">
+        <Grid item xs = { 7 }>
+          <Grid container justify = "left">
             <Grid item className={classes.grid}>
               <NavLink to="/home" className={classes.link} activeStyle={{ color: "#EDF5E1" }}>
                 <Typography className={classes.typography} variant="subtitle1"
@@ -168,9 +168,11 @@ class NavigationBar extends React.Component {
                 </NavLink>
               </Grid>
             </Tooltip>
-              
+            </Grid>
+            </Grid> 
 
-            
+            <Grid item xs = { 4 }>
+            <Grid container justify = "flex-end">
             { logged === false || logged === null ? (
               <Grid item className={classes.grid}>
                 <NavLink to="/login" className={classes.link} activeStyle={{ color: "#EDF5E1" }}>

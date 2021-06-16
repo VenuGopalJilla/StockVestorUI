@@ -89,18 +89,6 @@ class Main extends React.Component {
     
     return (
       <React.Fragment>
-        {/* <img
-          src="\images\stocks6.png"
-          style={{
-            position: "relative",
-            top: 35,
-            left: 0,
-            width: "100%",
-            height: "90%",
-          }}
-        /> */}
-        {/* <div style = {{ width : "100px", height : "100px"}}></div> */}
-        {/* <Paper elevation = {0} className = {classes.paper}>"Know what you own, and know why you own it."</Paper> */}
         <div>
           <Grid
             container
@@ -173,6 +161,11 @@ class Main extends React.Component {
                 />
               {/* </Tooltip> */}
             </Grid>
+            <Grid item justify = "center" style = {{ padding : "30px"}}>
+              <Paper elevation = {0} className = {classes.paper}>
+                "Know what you own, and know why you own it."
+              </Paper>
+            </Grid>
             <Grid item>
               <img
                 src="\images\stocks6.png"
@@ -185,11 +178,7 @@ class Main extends React.Component {
                 }}
               />
             </Grid>
-            <Grid item justify = "center" style = {{ padding : "30px"}}>
-              <Paper elevation = {0} className = {classes.paper}>
-                "Know what you own, and know why you own it."
-              </Paper>
-            </Grid>
+            
           </Grid>
         </div>
         {/* <div style = {{ width : "80px", height : "80px"}}></div> */}
