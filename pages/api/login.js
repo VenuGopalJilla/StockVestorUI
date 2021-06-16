@@ -21,15 +21,15 @@ async function run(email, password) {
     let status = "";
 
     if (present == null) {
-      status = "account doesnt exists";
+      status = "Account doesnot exists.";
       present = {};
     } else {
       const passwordHash = present.password;
       const success = await bcrypt.compare(password, passwordHash);
       if (success) {
-        status = "login success";
+        status = "Login success";
       } else {
-        status = "invalid credentials";
+        status = "Invalid Credentials";
         present = {};
       }
     }
