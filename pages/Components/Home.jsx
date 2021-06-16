@@ -132,14 +132,14 @@ class Home extends React.Component {
         >
           <Toolbar>
             <IconButton
-              disabled = {!logged}
+              // disabled = {!logged}
               color="inherit"
               aria-label="open drawer"
               onClick={this.handleDrawerOpen}
               edge="start"
-              style={{
-                display: logged == null || logged === false ? "none" : "",
-              }}
+              // style={{
+              //   display: logged == null || logged === false ? "none" : "",
+              // }}
               className={clsx(classes.menuButton, open && classes.hide)}
             >
               <MenuIcon />
