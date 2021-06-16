@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import underscore from "underscore";
 import {
+  DataGrid,
   GridToolbarContainer,
   GridToolbarExport,
 } from "@material-ui/data-grid";
@@ -55,7 +56,7 @@ class Simulation extends React.Component {
 
   componentDidMount = () => {
     const SP500 =
-      "https://raw.githubusercontent.com/saikr789/stock-analysis-tool-1011/master/Data/SP500Companies.json";
+      "https://raw.githubusercontent.com/saikr789/stock-analysis-tool-1011-data/master/Data/SP500Companies.json";
     axios
       .get(SP500)
       .then((s) => {
