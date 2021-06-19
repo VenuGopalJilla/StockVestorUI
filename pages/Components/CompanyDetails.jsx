@@ -17,8 +17,6 @@ import React from "react";
 import axios from "axios";
 import Dashboard from "./Dashboard";
 import Loader from "react-loader-spinner";
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
 
 
@@ -47,8 +45,7 @@ const styles = (theme) => ({
   },
   tooltip: {
     backgroundColor: "white",
-    width : 250,
-    height: 100,
+    maxWidth : "none",
     color : "#05386B",
   },
   tooltip1: {
@@ -85,7 +82,7 @@ class CompanyDetails extends React.Component {
         "Spread Close-Open",
       ],
       stockdetails: [],
-      suggestion: "",
+      suggestion: [],
     };
   }
 
@@ -141,12 +138,9 @@ class CompanyDetails extends React.Component {
     await axios
         .get("/api/getsuggestions?company=" + company)
         .then((t) => {
+          console.log(t.data);
           if (t.status === 200) {
-            let suggest = t.data["suggest"];
-            if (suggest.length === 0) {
-              suggest = "hold";
-            }
-            this.setState({ suggestion: suggest, suggestionLoading: false }, () => {});
+            this.setState({ suggestion: t.data, suggestionLoading: false }, () => {});
           } else {
             this.setState({ suggestion: "", suggestionLoading: false }, () => {});
           }
@@ -232,12 +226,17 @@ class CompanyDetails extends React.Component {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {this.state.suggestion == "buy" ? (
+                          {this.state.suggestion['suggest'] == "buy" ? (
                             <Tooltip
                               classes={{ tooltip: classes.tooltip }}
                               placement="top"
                               title={
-                                <Typography>Its actual returns percentage is closer to the predicted Upper Band.</Typography>
+                                <Typography>
+                                  Its actual returns percentage <br/>is closer to the predicted Lower Band %.<br/>
+                                  Lower Band % - {this.state.suggestion['lower']}<br/>
+                                  Actual Returns % - {this.state.suggestion['actual']}<br/>
+                                  Upper Band %- {this.state.suggestion['upper']}
+                                </Typography>
                               }
                               interactive
                             >
@@ -266,12 +265,17 @@ class CompanyDetails extends React.Component {
                                 </TableCell>
                               </TableRow>
                           )}
-                          {this.state.suggestion == "sell" ? (
+                          {this.state.suggestion['suggest'] == "sell" ? (
                             <Tooltip
                               classes={{ tooltip: classes.tooltip }}
                               placement="right-end"
                               title={
-                                <Typography>Its actual returns percentage is closer to the predicted Lower Band.</Typography>
+                                <Typography>
+                                  Its actual returns percentage <br/>is closer to the predicted Upper Band %.<br/>
+                                  Lower Band %- {this.state.suggestion['lower']}<br/>
+                                  Actual Returns % - {this.state.suggestion['actual']}<br/>
+                                  Upper band %- {this.state.suggestion['upper']}
+                                  </Typography>
                               }
                               interactive
                             >
@@ -300,12 +304,14 @@ class CompanyDetails extends React.Component {
                                 </TableCell>
                               </TableRow>
                           )}
-                          {this.state.suggestion == "hold" ? (
+                          {this.state.suggestion['suggest'] == "hold" ? (
                             <Tooltip
                               classes={{ tooltip: classes.tooltip }}
                               placement="bottom"
                               title={
-                                <Typography>Its actual returns percentage is neither closer to the predicted Upper Band nor predicted Lower band.</Typography>
+                                <Typography>
+                                  Its actual returns percentage is neither <br/>closer to the predicted Upper Band % <br/> nor to the predicted Lower band %.
+                                  </Typography>
                               }
                               interactive
                             >
@@ -337,6 +343,7 @@ class CompanyDetails extends React.Component {
                         </TableBody>
                       </Table>
                     </TableContainer>
+                    <Typography variant = "caption"> * Suggestions are given <br />with a buffer of 15%.</Typography>
                 </Grid>
                 )}
 

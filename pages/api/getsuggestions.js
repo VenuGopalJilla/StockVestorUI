@@ -21,14 +21,25 @@ export default (req, res, next) => {
                 const header = rows[0].replace("\r", "").split(",");
                 const codeindex = header.indexOf("code");
                 const suggestindex = header.indexOf("suggest");
+                const actualindex = header.indexOf("actual");
+                const minimumindex = header.indexOf("minimum");
+                const maximumindex = header.indexOf("maximum");
+                var row = [];
                 for (let i = 1; i < rows.length - 1; i++) {
-                  let row = rows[i].split(",");
+                  row = rows[i].split(",");
                   if (parseInt(row[codeindex]) == code) {
-                    suggestion = row[suggestindex].replace("\r", "");
+                    if ((parseFloat(row[actualindex]) == parseFloat(row[minimumindex])) || (parseFloat(row[actualindex]) == parseFloat(row[maximumindex]))) {
+                      suggestion = "hold";
+                    } else {
+                      suggestion = row[suggestindex].replace("\r", "");
+                      if (row[suggestindex] == "") {
+                        suggestion = "hold";
+                      }
+                    }
                     break;
                   }
                 }
-                res.send({ suggest: suggestion });
+                res.send({ suggest: suggestion, lower : parseFloat(row[minimumindex]).toFixed(3), upper : parseFloat(row[maximumindex]).toFixed(3), actual : parseFloat(row[actualindex]).toFixed(3) });
               } else {
                 res.status(404).send({ error: "error" });
               }

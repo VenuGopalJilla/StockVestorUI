@@ -2,14 +2,8 @@ const axios = require("axios");
 export default async (req, res, next) => {
   try {
     console.log("simulationtop");
-    // const topurl =
-    //   "https://raw.githubusercontent.com/saikr789/stock-analysis-tool-1011/master/Data/Simulation/top_seldays.csv";
-    // const topurl =
-      // "https://raw.githubusercontent.com/saikr789/stock-index-risk/master/Data/SimulationResult/top_seldays.csv";
-    // const topurl =
-      // "https://raw.githubusercontent.com/VenuGopalJilla/StockAnalysisTool/main/Data/SP500_simulation_results/top_seldays_Results.csv";
     const topurl = 
-      "https://raw.githubusercontent.com/saikr789/stock-analysis-tool-1011-data/master/Data/Top/buy_seldays.csv";
+      "https://raw.githubusercontent.com/saikr789/stock-analysis-tool-1011-data/master/Data/Top/simres_seldays.csv";
 
     const days = req.query["days"];
     axios
@@ -23,6 +17,9 @@ export default async (req, res, next) => {
           for (let i = 1; i < rows.length; i++) { 
             const data = rows[i].split(",");
             if (data.length < 3) {
+              continue;
+            }
+            if ((parseFloat(data[2]) == parseFloat(data[4])) || (parseFloat(data[2]) == parseFloat(data[5]))) {
               continue;
             }
             response.push({

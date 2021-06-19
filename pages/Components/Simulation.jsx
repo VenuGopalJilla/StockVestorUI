@@ -230,8 +230,8 @@ class Simulation extends React.Component {
                         <TableCell variant = "h5"> Security Id</TableCell>
                         <TableCell align="right" variant = "h5">Company</TableCell>
                         <TableCell align="right" variant = "h5">Actual Average Returns</TableCell>
-                        <TableCell align="right" variant = "h5">Minimum Prediction Range</TableCell>
-                        <TableCell align="right" variant = "h5">Maximum Prediction Range</TableCell>
+                        <TableCell align="right" variant = "h5">Minimum Predicted Returns</TableCell>
+                        <TableCell align="right" variant = "h5">Maximum Predicted Returns</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
